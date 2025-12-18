@@ -1,12 +1,18 @@
-# Early detection of industrial equipment degradation based on multivariable time series
+# Hybrid-Predictive-Maintenance
+
+**Early detection of industrial equipment degradation based on multivariable time series**
+
+## Overview
 
 This project develops a **hybrid machine learning system** for **early detection of equipment degradation** and **Remaining Useful Life (RUL) estimation** using multivariate sensor time series (e.g., temperature, pressure, vibration).
 
+The system is designed to be robust to sensor data gaps and adaptable across different equipment types.
+
 The project addresses two key objectives:
 
-- **Мulticlass Classification** – distinguishing between five modes: normal operation (`none`) and four component failures (`comp1`–`comp4`).
+- Мulticlass Classification – distinguishing between five modes: normal operation (`none`) and four component failures (`comp1`–`comp4`).
 
-- **RUL Regression** – estimating the **time until failure (in hours)**.
+- RUL Regression – estimating the time until failure (in hours).
 
 ## Dataset
 
@@ -24,7 +30,7 @@ The dataset contains 5 files:
 
 Source: [Azure blob storage](https://gallery.azure.ai/Experiment/Predictive-Maintenance-Implementation-Guide-Data-Sets-1)
 
-Download: [IEEEDataPort](https://ieee-dataport.org/documents/data1)
+Download:[IEEEDataPort](https://ieee-dataport.org/documents/data1)
 
 ## Repository Structure 
 
