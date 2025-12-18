@@ -28,7 +28,7 @@ The dataset contains 5 files:
 
 Source: [Azure blob storage](https://gallery.azure.ai/Experiment/Predictive-Maintenance-Implementation-Guide-Data-Sets-1)
 
-Download:[IEEEDataPort](https://ieee-dataport.org/documents/data1)
+Download: [IEEEDataPort](https://ieee-dataport.org/documents/data1)
 
 ## Repository Structure 
 
@@ -66,5 +66,3 @@ Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-
-All hyperparameters are configurable in `model_config.yaml`.
