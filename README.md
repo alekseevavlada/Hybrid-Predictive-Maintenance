@@ -1,29 +1,54 @@
 # Hybrid-Predictive-Maintenance
 
-This project implements a **hybrid predictive maintenance (PdM) framework** that integrates **multi-class failure classification** and **Remaining Useful Life (RUL) regression** for industrial machinery. This repository demonstrates a pipeline built on **Explainable AI (XAI)** principles and leverages both classical machine learning and modern deep learning architectures for time-series sensor data from manufacturing environments.
+This repository implements a hybrid predictive maintenance (PdM) framework combining multi-class failure classification and Remaining Useful Life (RUL) regression. The approach is grounded in explainable AI (XAI) principles and evaluated on the Microsoft Azure PdM dataset.
 
-> Note: The complete implementation, including data loading, feature engineering, model definition, training loops, and evaluation metrics, is provided in the accompanying Jupyter Notebooks. 
+All code, experiments, and results are documented in the Jupyter Notebooks provided in the `Notebooks/` directory.
 
-## Overview
+## Problem Formulation
 
-Predictive maintenance (PdM) represents a paradigm shift from traditional reactive or scheduled maintenance toward data-driven, proactive asset management. By leveraging operational telemetry and event logs, PdM systems aim to anticipate incipient failures, thereby minimizing unplanned downtime, optimizing maintenance expenditures, and extending the service life of critical machinery. 
+The predictive maintenance (PdM) system addresses two interrelated tasks using multivariate time-series data from 100 simulated industrial machines. Observations are aggregated at 3-hour intervals, and all features are derived solely from historical or contemporaneous data to ensure temporal validity.
 
-The foundation of this project is a **causally consistent, high-dimensional feature representation** derived from heterogeneous industrial data streams, including sensor telemetry, error logs, maintenance records, and static machine metadata.
+**Task 1: Multi-class failure Classification**
 
-The principal methodological point lies in the **shared feature space architecture**: a single, temporally aligned feature matrix, constructed at a 3-hour resolution, serves as input to both the classification and regression modules. This design enforces semantic and temporal coherence between the two predictive objectives and establishes a natural pathway toward future integration into a multi-task learning (MTL) framework, where shared representations can be optimized end-to-end for joint performance.
+For each machine at a given time, the model predicts whether a failure of one of four replaceable components will occur within the next 24 hours. The target is a categorical variable with five possible values: `none` (no failure) or `comp1`–`comp4` (failure of the corresponding component). 
 
-The feature engineering pipeline systematically encodes four orthogonal yet complementary facets of machine health degradation:
+**Task 2: Remaining Useful Life (RUL) regression**
 
-- **Temporal sensor dynamics**: Rolling statistical descriptors (mean and standard deviation) are computed over short-term (3-hour) and long-term (24-hour) windows for each sensor channel (voltage, rotation, pressure, vibration). 
-- **Failure precursors**: Non-fatal error events are aggregated into cumulative counts over a 24-hour sliding window for each of five error types.
-- **Maintenance history and aging**: For each of four replaceable components, the time elapsed since the last replacement is computed, alongside machine age (in years). 
-- **Spectral characteristics**: Fast Fourier Transform (FFT) is applied to the most recent 24 raw telemetry observations per sensor to extract dominant frequency components and their amplitudes. 
-  
-Critically, all features are engineered under a **strict temporal causality constraint**: at any given timestamp, only historical or contemporaneous data are used. No future information is permitted to influence feature computation. 
+In parallel, the system estimates the continuous time remaining until the next failure, expressed in hours and capped at 24. This provides a quantitative measure of urgency, complementing the discrete classification output. The RUL is computed as the actual time to the next recorded failure event, truncated at the 24-hour horizon to focus on the near-term operational window.
+
+Both tasks share an identical input representation: a fixed-dimensional feature vector constructed from telemetry, error logs, maintenance records, and machine metadata.
+
+## Feature Engineering
+
+All features are derived from five source tables and aggregated at 3-hour intervals. The construction strictly respects temporal causality: at any time point, only past or contemporaneous data are used. The resulting feature vector comprises 52 dimensions, grouped into four categories.
+
+**1. Temporal sensor dynamics**
+
+- For each of the four telemetry channels (voltage, rotation, pressure, vibration):
+  - Mean and standard deviation over the last 3 hours
+  - Mean and standard deviation over the last 24 hours
+  - Difference between 24‑h and 3‑h statistics (trend indicators)
+
+**2. Failure precursors**
+
+- Non-fatal error events are aggregated by type over the past 24 hours. The resulting five counts (one per error type) serve as early warning signals of abnormal operation.
+
+**3. Maintenance history and aging**
+
+- Days since last replacement for each of the four components
+- Machine age (in years)
+- Machine model type (one-hot encoded)
+
+**4. Spectral characteristics.**
+
+- For each telemetry channel, the two dominant frequencies and their amplitudes from a Fast Fourier Transform (FFT) applied to the last 24 raw sensor values
+- FFT features are standardized independently
+
+This representation supports both classical interpretable models (e.g., gradient-boosted trees) and modern deep learning architectures.
 
 ## Data Sources
 
-Based on the open-source Azure PdM dataset used in [Hrnjica & Softic (2020)](https://link.springer.com/chapter/10.1007/978-3-030-57997-5_8), which simulates telemetry from 100 machines over two years. The dataset includes:
+The experiments use the synthetic Azure PdM dataset introduced in Hrnjica & Softic (2020), which simulates telemetry from 100 machines over two years. The dataset comprises:
 
 ```python
 import pandas as pd
@@ -34,6 +59,9 @@ maint = pd.read_csv("PdM_maint.csv")          # Maintenance logs (component repl
 failures = pd.read_csv("PdM_failures.csv")    # Critical failure events (4 component types)
 machines = pd.read_csv("PdM_machines.csv")    # Static metadata (model type, age)
 ```
+
+> The original Azure AI Gallery link is defunct. A copy is available on Kaggle:
+https://www.kaggle.com/datasets/arnabbiswas1/microsoft-azure-predictive-maintenance
 
 ## Repository Structure 
 
