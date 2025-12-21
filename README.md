@@ -1,34 +1,67 @@
 # Hybrid-Predictive-Maintenance
 
-**Early detection of industrial equipment degradation based on multivariable time series**
+This repository implements a hybrid predictive maintenance (PdM) framework combining multi-class failure classification and Remaining Useful Life (RUL) regression. The approach is grounded in explainable AI (XAI) principles and evaluated on the Microsoft Azure PdM dataset.
 
-## Overview
+All code, experiments, and results are documented in the Jupyter Notebooks provided in the `Notebooks/` directory.
 
-This project develops a **hybrid machine learning system** for **early detection of equipment degradation** and **Remaining Useful Life (RUL) estimation** using multivariate sensor time series (e.g., temperature, pressure, vibration).
+## Problem Formulation
 
-The project addresses two key objectives:
+The predictive maintenance (PdM) system addresses two interrelated tasks using multivariate time-series data from 100 simulated industrial machines. Observations are aggregated at 3-hour intervals, and all features are derived solely from historical or contemporaneous data to ensure temporal validity.
 
-- **Мulticlass Classification** – distinguishing between five modes: normal operation (`none`) and four component failures (`comp1`–`comp4`).
+**Task 1: Multi-class failure Classification**
 
-- **RUL Regression** – estimating the **time until failure (in hours)**.
+For each machine at a given time, the model predicts whether a failure of one of four replaceable components will occur within the next 24 hours. The target is a categorical variable with five possible values: `none` (no failure) or `comp1`–`comp4` (failure of the corresponding component). 
 
-## Dataset
+**Task 2: Remaining Useful Life (RUL) regression**
 
-The dataset contains 5 files:
+In parallel, the system estimates the continuous time remaining until the next failure, expressed in hours and capped at 24. This provides a quantitative measure of urgency, complementing the discrete classification output. The RUL is computed as the actual time to the next recorded failure event, truncated at the 24-hour horizon to focus on the near-term operational window.
 
-- `PdM_telemetry.csv` – which collects historical data about machine behavior (voltage, vibration, etc).
+Both tasks share an identical input representation: a fixed-dimensional feature vector constructed from telemetry, error logs, maintenance records, and machine metadata.
 
-- `PdM_errors.csv` – the data about warnings and errors in the machines.
+## Feature Engineering
 
-- `PdM_maint.csv` – data about replacement and maintenance for the machines.
+All features are derived from five source tables and aggregated at 3-hour intervals. The construction strictly respects temporal causality: at any time point, only past or contemporaneous data are used. The resulting feature vector comprises 52 dimensions, grouped into four categories.
 
-- `PdM_failures.csv` – data when a certain machine is stopped, due to component failure.
+**1. Temporal sensor dynamics**
 
-- `PdM_machines.csv` – descriptive information about the machines.
+- For each of the four telemetry channels (voltage, rotation, pressure, vibration):
+  - Mean and standard deviation over the last 3 hours
+  - Mean and standard deviation over the last 24 hours
+  - Difference between 24‑h and 3‑h statistics (trend indicators)
 
-Source: [Azure blob storage](https://gallery.azure.ai/Experiment/Predictive-Maintenance-Implementation-Guide-Data-Sets-1)
+**2. Failure precursors**
 
-Download: [IEEEDataPort](https://ieee-dataport.org/documents/data1)
+- Non-fatal error events are aggregated by type over the past 24 hours. The resulting five counts (one per error type) serve as early warning signals of abnormal operation.
+
+**3. Maintenance history and aging**
+
+- Days since last replacement for each of the four components
+- Machine age (in years)
+- Machine model type (one-hot encoded)
+
+**4. Spectral characteristics.**
+
+- For each telemetry channel, the two dominant frequencies and their amplitudes from a Fast Fourier Transform (FFT) applied to the last 24 raw sensor values
+- FFT features are standardized independently
+
+This representation supports both classical interpretable models (e.g., gradient-boosted trees) and modern deep learning architectures.
+
+## Data Sources
+
+The experiments use the synthetic Azure PdM dataset introduced in Hrnjica & Softic (2020), which simulates telemetry from 100 machines over two years. The dataset comprises:
+
+```python
+import pandas as pd
+
+telemetry = pd.read_csv("PdM_telemetry.csv")  # Hourly sensor readings (voltage, rotation, pressure, vibration)
+errors = pd.read_csv("PdM_errors.csv")        # Non-fatal error logs (5 error types)
+maint = pd.read_csv("PdM_maint.csv")          # Maintenance logs (component replacements)
+failures = pd.read_csv("PdM_failures.csv")    # Critical failure events (4 component types)
+machines = pd.read_csv("PdM_machines.csv")    # Static metadata (model type, age)
+```
+
+> The original Azure AI Gallery link is defunct. A copy is available on Kaggle:
+https://www.kaggle.com/datasets/arnabbiswas1/microsoft-azure-predictive-maintenance
 
 ## Repository Structure 
 
@@ -60,9 +93,21 @@ HIBRID-PREDICTIVE-MAINTENANCE/
 └── Presentation.pdf
 ```
 
-## Usage
+## Dependencies
 
-Install dependencies:
 ```bash
-pip install -r requirements.txt
+numpy>=1.21
+pandas>=1.3
+scikit-learn>=1.0
+torch>=1.10
+matplotlib
+seaborn
+tqdm
+statsmodels
 ```
+
+## References
+
+1. Hrnjica, B., Softic, S. (2020). Explainable AI in Manufacturing: A Predictive Maintenance Case Study. In: Lalic, B., Majstorovic, V., Marjanovic, U., von Cieminski, G., Romero, D. (eds) Advances in Production Management Systems. Towards Smart and Digital Manufacturing. APMS 2020. IFIP Advances in Information and Communication Technology, vol 592. Springer, Cham. https://doi.org/10.1007/978-3-030-57997-5_8.
+2. Zeng, A., Chen, M., Zhang, L., & Xu, Q. (2023). Are Transformers Effective for Time Series Forecasting?. Proceedings of the AAAI Conference on Artificial Intelligence, 37(9), 11121-11128. https://doi.org/10.1609/aaai.v37i9.26317
+3. Azure AI Gallery. Predictive Maintenance Implementation Guide Data Sets. https://gallery.azure.ai/Experiment/Predictive-Maintenance-Implementation-Guide-Data-Sets-1
