@@ -109,6 +109,6 @@ statsmodels
 ## References
 
 1. Hrnjica, B., Softic, S. (2020). Explainable AI in Manufacturing: A Predictive Maintenance Case Study. In: Lalic, B., Majstorovic, V., Marjanovic, U., von Cieminski, G., Romero, D. (eds) Advances in Production Management Systems. Towards Smart and Digital Manufacturing. APMS 2020. IFIP Advances in Information and Communication Technology, vol 592. Springer, Cham. https://doi.org/10.1007/978-3-030-57997-5_8.
-2. Zeng, A., Chen, M., Zhang, L., & Xu, Q. (2023). Are Transformers Effective for Time Series Forecasting?. Proceedings of the AAAI Conference on Artificial Intelligence, 37(9), 11121-11128. https://doi.org/10.1609/aaai.v37i9.26317
+2. Zeng, A., Chen, M., Zhang, L., & Xu, Q. (2023). Are Transformers Effective for Time Series Forecasting? Proceedings of the AAAI Conference on Artificial Intelligence, 37(9), 11121-11128. https://doi.org/10.1609/aaai.v37i9.26317
 3. Falcão, D., Reis, F., Farinha, J., Lavado, N., Mendes, M. Fault Detection in Industrial Equipment through Analysis of Time Series Stationarity. Algorithms 2024, 17, 455. https://doi.org/10.3390/a17100455
 4. Azure AI Gallery. Predictive Maintenance Implementation Guide Data Sets. https://gallery.azure.ai/Experiment/Predictive-Maintenance-Implementation-Guide-Data-Sets-1
