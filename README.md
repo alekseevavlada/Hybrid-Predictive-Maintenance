@@ -76,7 +76,8 @@ HIBRID-PREDICTIVE-MAINTENANCE/
 │   ├── PdM_failures.csv       
 │   └── PdM_machines.csv
 ├── Notebooks/
-│   ├── Classification.ipynb
+│   ├── Binary Classification.ipynb
+│   ├── Multi-Class Classification.ipynb
 │   └── RUL.ipynb
 ├── src/
 │   ├── __init__.py
@@ -88,9 +89,7 @@ HIBRID-PREDICTIVE-MAINTENANCE/
 ├── configs/
 │   └── model_config.yaml
 ├── Models/
-├── Outputs/
-├── Report.pdf
-└── Presentation.pdf
+└── Outputs/
 ```
 
 ## Dependencies
