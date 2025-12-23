@@ -95,14 +95,21 @@ HIBRID-PREDICTIVE-MAINTENANCE/
 ## Dependencies
 
 ```bash
-numpy>=1.21
-pandas>=1.3
-scikit-learn>=1.0
-torch>=1.10
-matplotlib
-seaborn
-tqdm
-statsmodels
+# requirements.txt
+numpy==1.24.3
+pandas==2.0.3
+scipy==1.11.1
+scikit-learn==1.3.0
+torch==2.0.1
+pytorch-forecasting==0.10.2  
+statsmodels==0.14.0
+matplotlib==3.7.1
+seaborn==0.12.2
+tqdm==4.65.0
+PyYAML==6.0  
+joblib==1.3.2  
+jupyter==1.0.0
+ipywidgets>=7.0.0  
 ```
 
 ## References
