@@ -1,0 +1,46 @@
+# configs/model_config.yaml
+common:
+  batch_size: 256
+  random_seed: 42
+
+classification:
+  task: "classification"
+  n_classes: 5
+  epochs: 200
+  lr: 5e-4
+  weight_decay: 1e-5
+  models:
+    LSTM:
+      hidden_size: 128
+      dropout: 0.9
+    DLinear:
+      dropout: 0.1
+    GRU:
+      hidden_size: 128
+      dropout: 0.9
+    Transformer:
+      hidden_size: 32
+      dropout: 0.5
+    RandomForest:
+      n_estimators: 200
+      class_weight: "balanced"
+      max_depth: 7
+      min_samples_split: 5
+      min_samples_leaf: 2
+    GradientBoosting:
+      n_estimators: 200
+      max_depth: 7
+      min_samples_split: 5
+      min_samples_leaf: 2
+
+rul:
+  task: "regression"
+  epochs: 200
+  lr: 1e-3
+  weight_decay: 1e-4
+  models:
+    DLinear:
+      dropout: 0.1
+    MLP:
+      hidden_size: 64
+      dropout: 0.3
