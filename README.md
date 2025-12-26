@@ -76,20 +76,21 @@ HIBRID-PREDICTIVE-MAINTENANCE/
 │   ├── PdM_failures.csv       
 │   └── PdM_machines.csv
 ├── Notebooks/
-│   ├── Binary Classification.ipynb
-│   ├── Multi-Class Classification.ipynb
-│   └── RUL.ipynb
+│   ├── 01_multiclass_classification.ipynb
+│   ├── 02_binary_classification.ipynb
+│   └── 03_rul_regression.ipynb
 ├── src/
 │   ├── __init__.py
 │   ├── data_loader.py
 │   ├── feature_engineering.py
 │   ├── models.py
-│   ├── evaluate.py
-│   └── utils.py
+│   └── 01_multiclass_classification.py
 ├── configs/
 │   └── model_config.yaml
-├── Models/
-└── Outputs/
+└── Outputs/               
+    ├── Metrics/
+    ├── Models/
+    └── Plots/
 ```
 
 ## Dependencies

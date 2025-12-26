@@ -53,3 +53,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.bak
+*.pth
+*.pkl
+*.csv
+*.png
