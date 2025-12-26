@@ -81,10 +81,10 @@ HIBRID-PREDICTIVE-MAINTENANCE/
 │   └── 03_rul_regression.ipynb
 ├── src/
 │   ├── __init__.py
-│   ├── data_loader.py
+│   ├── 01_multiclass_classification.py
+│   ├── data_loader.py 
 │   ├── feature_engineering.py
-│   ├── models.py
-│   └── 01_multiclass_classification.py
+│   └── models.py
 ├── configs/
 │   └── model_config.yaml
 └── Outputs/               
