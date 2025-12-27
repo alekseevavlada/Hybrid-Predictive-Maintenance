@@ -82,9 +82,12 @@ HIBRID-PREDICTIVE-MAINTENANCE/
 ├── src/
 │   ├── __init__.py
 │   ├── 01_multiclass_classification.py
+│   ├── 02_binary_classification.py
+│   ├── 03_rul_regression.py
 │   ├── data_loader.py 
 │   ├── feature_engineering.py
-│   └── models.py
+│   ├── models.py
+│   └── train.py
 ├── configs/
 │   └── model_config.yaml
 └── Outputs/               
